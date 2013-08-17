@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US"><head><title>Control Flow Graph</title></head>
+
+<title>RoLex: BGP Configuration Verifier</title>
+
+<center>
+<h1><font color=blue>RoLex: Control Flow Analyzer</font></h1> 
+<h2><em>Web Interface Example</em></h2>
+</center>
+
+<table width=80% align=center>
+<tr>
+<hr width=80%>
+
+<body>
+<h1>
+	Control Flow
+</h1>
+<table width="30%" align=center>
+	<caption>
+		<b>
+			Neighbor ASes
+		</b>
+	</caption>
+	<tbody><tr>
+		<th align="right">
+			AS
+		</th>
+		<th align="right">
+			Sessions
+		</th>
+	</tr>
+	<tr>
+		<td align="right">209</td>
+		<td align="right"><a href="">5</a>
+		</td>
+	</tr>
+	<tr>
+		<td align="right">701</td>
+		<td align="right"><a href="">5</a>
+		</td>
+	</tr>
+	<tr>
+		<td align="right">1239</td>
+		<td align="right"><a href="asview-fake.html">4</a>
+		</td>
+		<td><b><== Click Here</b></td>
+	</tr>
+	<tr>
+		<td align="right">3356</td>
+		<td align="right"><a href="">4</a>
+		</td>
+	</tr>
+	<tr>
+		<td align="right">7018</td>
+		<td align="right"><a href="">4</a>
+		</td>
+	</tr>
+</tbody></table>
+
+<p>
+<table align=center width=80%>
+<tr><td>
+This is a <em>very trimmed down</em> example of the Web interface to the
+control flow analyzer.  The example is static HTML, but the real
+analyzer uses a DB backend.
+<p>
+The "AS view" summarizes the number of sessions per remote AS.  Clicking
+on the number of sessions provides details about each one of those
+sessions.
+
+The real control flow analyzer also has a "router view", which shows BGP
+sessions by router.  We do not show this functionality in this online
+example. 
+<p>
+<hr>
+</table>
+<center><a href=../../>Back to Overview</a></center>
+</table>

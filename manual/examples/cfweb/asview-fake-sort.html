@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US"><head><title>Control Flow Graph</title></head>
+
+<title>RoLex: BGP Configuration Verifier</title>
+
+<center>
+<h1><font color=blue>RoLex: Control Flow Analyzer</font></h1> 
+<h2><em>Web Interface Example</em></h2>
+</center>
+
+<table width=80% align=center>
+<tr>
+<hr width=80%>
+
+
+<body>
+<h1>
+	Control Flow
+</h1>
+<table width="80%">
+	<caption>
+		<b>
+			Routers Peering with AS 1239 
+		</b>
+	</caption>
+	<tbody><tr>
+		<th>
+			Router
+		</th>
+		<th>
+			Neighbor
+		</th>
+		<th>
+			Neighbor AS
+		</th>
+		<th>
+			<a href="asview-fake-sort.html">Import Route Map</a>
+		</th>
+		<th>
+			<a href="">Export Route Map</a>
+		</th>
+	</tr>
+	<tr>
+		<td align="center"><a href="">atlga-gw1</a>
+		</td>
+		<td align="center"><a href="">ebgp_AS1239_0</a>
+		</td>
+		<td align="center"><a href="asview-fake.html">1239</a>
+		</td>
+		<td align="center"><a href="rm25.html">25</a>
+		</td>
+		<td align="center"><a href="rm26.html">26</a>
+		</td>
+	</tr>
+	<tr>
+		<td align="center"><a href="">cgcil-gw1</a>
+		</td>
+		<td align="center"><a href="">ebgp_AS1239_1</a>
+		</td>
+		<td align="center"><a href="asview-fake.html">1239</a>
+		</td>
+		<td align="center"><a href="rm25.html">25</a>
+		</td>
+		<td align="center"><a href="rm26.html">26</a>
+		</td>
+	</tr>
+	<tr>
+		<td align="center"><a href="">laxca-gw1</a>
+		</td>
+		<td align="center"><a href="">ebgp_AS1239_3</a>
+		</td>
+		<td align="center"><a href="asview-fake.html">1239</a>
+		</td>
+		<td align="center"><a href="rm25.html">25</a>
+		</td>
+		<td align="center"><a href="rm26.html">26</a>
+		</td>
+	</tr>
+	<tr>
+		<td align="center"><a href="">dlxtx-gw2</a>
+		</td>
+		<td align="center"><a href="">ebgp_AS1239_2</a>
+		</td>
+		<td align="center"><a href="asview-fake.html">1239</a>
+		</td>
+		<td align="center"><a href="rm114.html">114</a>
+		</td>
+		<td align="center"><a href="rm26.html">26</a>
+		</td>
+	</tr>
+	<tr>
+		<td align="center"></td>
+		<td align="center"></td>
+		<td align="center"></td>
+		<td align="center"><a href="rm25-114.html">Show All Import</a>
+		</td>
+		<td align="center"><a href="rm26.html">Show All Export</a>
+		</td>
+	</tr>
+</tbody></table>
+<a href="rm25-26-114.html">Show All Route Maps</a>
+</body></html>
+
+<p>
+<table align=center width=80%> <tr><td> The per-AS view summarizes the
+BGP sessions for a particular remote AS (both eBGP and iBGP, although
+this example only shows eBGP sessions).
+<p>
+In this example, you can see the following functionality in the Web
+interface:
+<ul>
+<li> Clicking on a route map number will show a canonicalized version of
+that route map, describing its mechanism clause-by-clause.
+<li> Clicking on the route map column headers will <b>sort</b> the rows so that
+routers with common route maps are grouped together.
+<li> Clicking on "Show All..." will show several route maps on one
+screen.
+<li> When showing only two route maps at once, the analyzer will also
+show a <b>diff</b> of the route maps.  Try clicking on "Show All Import" to
+see this.
+</ul>
+<p>
+There are some other pieces of functionality that are available in the
+real version, but not functional in this example:
+<ul>
+<li> Clicking on a router name will produce a table that shows all BGP
+sessions associated with that router.
+</ul>
+<hr>
+</table>
+</table>
+
+<center><a href=../../>Back to Overview</a></center>
+</table>

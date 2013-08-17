@@ -1,0 +1,53 @@
+<title>BGP Configuration Verifier</title>
+
+<center>
+<h1><font color=blue>rcc Verifier</font></h1>
+</center>
+
+<a name=pbv></a>
+<h3>Constraint Verifier</h3>
+
+<em>rcc</em> executes correctness checks, using the properties of the
+<em>routing logic</em> as a model for correctness.  Here is a list of
+<a href=tests.html>tests</a> currently performed by the verifier.
+<p>
+
+The constraint verifier performs three steps:
+<ol>
+<li> Expands configuration languages (e.g., Cisco's <tt>peer-group</tt>
+etc.)
+<li> Converts the configuration into an intermediate format, in the form
+of relational database tables.
+<li> Checks constraints by executing a sequence of queries on the
+database tables.
+</ol>
+
+
+Each constraint is written as a simple SQL query.  (Please see the
+development section in the <a href=manual.html>manual</a> for details.)
+The flexibility of how constraints are specified permits router-specific
+configuration checks, as well as AS-wide configuration checks.
+<p>
+
+We have included some examples that are included with the initial
+release and fully intend to develop more as people demand more features.
+Additionally, we have made the specification language simple enough that
+operators can write their own checks and incorporate them into the tool
+very easily.
+<p>
+
+<h3>Tests</h3>
+
+Currently, the verifier performs the following <a href=tests.html><b>tests</b></a>.<p>
+
+<b><a href=feedback.cgi>Send</a> us suggestions for other constraints
+you need checked!</b><p> 
+
+<p>
+
+<h3>Example Output</h3>
+<ul>
+<li> Example <a href=examples/pbv/>output</a> from the verifier.
+<br>(<em>Note:</em> the example output is from an older version of the tool,
+so the output from newer versions may look slightly different.)
+</ul>

@@ -1,0 +1,84 @@
+<title>rcc: BGP Configuration Verifier</title>
+
+<center>
+<h1><font color=blue>rcc: Configuration Verifier</font></h1> 
+<h2><em>Example Output</em></h2>
+</center>
+
+<table align=center width=80%> <tr align=left><td> More detailed
+instructions for running the verifier are in the <a
+href=../../manual.html>manual</a>, but it's essentially as easy as
+running a script.  The output will look something like the examples
+below.
+
+<tr><td>
+<p>
+<tr><td>
+<p>
+
+<tr><td>
+<b>Next-hop reachability test.</b>  Test that, for an eBGP session,
+either <tt> set next-hop-self</tt> is used or that the network
+associated with the BGP session is injected into the interior routing
+protocol.  Output for this test looks roughly like this:
+
+<table width
+<table align=center width=50%>
+<tr><td>
+<pre>
+found ebgp on atlga-gw1 (AS 65000)
+ebgp: no next-hop-self atlga-gw1 (10.215.0.113)
+ERROR: 10.215.0.113 not in iBGP/IGP (eBGP session)
+...
+</pre>
+</table>
+
+<tr><td>
+The first two lines are debugging lines and will typically not print
+unless the debugging flag is turned on.  The last line indicates an
+error condition: the IP address of the eBGP neighbor is not present in
+the interior routing protocol.  This is an error, because, as indicated
+by the previous line, <tt>next-hop-self</tt> is not used on the session.
+
+<tr><td>
+<hr>
+
+<tr><td>
+<b>Dangling BGP session test.</b>  Test that, for each attempted iBGP
+session (i.e., <tt>bgp neighbor</tt> statement), Output for this test looks roughly like this:
+
+<table width
+<table align=center width=50%>
+<tr><td>
+<pre>
+ERROR: no _r2 with loopback 10.0.1.65 (from bosma-gw)
+ERROR: no _r2 with loopback 10.123.197.110 (from bosma-rr1)
+ERROR: no _r2 with loopback 10.123.197.110 (from bosma-rr2)
+...
+ERROR: laxca-gw has NO "router bgp" statement
+...
+</pre>
+</table>
+
+<tr><td>
+The first three lines show example violations.  The error condition
+for a particular line indicates that there is a <tt>bgp neighbor</tt>
+statement on a particular router (e.g., bosma-gw) that attempts to
+establish an iBGP session to an IP address that is not the loopback
+address of any router in the AS.
+<p>
+The fourth error line indicates that there is a router in the AS that
+has no <tt>router bgp</tt> statement at all (thus, not even attempting
+to establish BGP connectivity).  As this example shows, the yacc-style
+rules can be network-wide, and complex enough to show exactly where (and
+how) a particular error is occurring.
+
+<tr><td>
+<hr>
+
+
+
+<tr align=center><td>
+<a href=../../>Back to Overview</a>
+
+</table>

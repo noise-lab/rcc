@@ -1,0 +1,54 @@
+<title>BGP Configuration Browser</title>
+
+<center>
+<h1><font color=blue>rcc Configuration Browser</font></h1>
+</center>
+
+<a name=cga></a>
+<h3>Control Flow Analyzer</h3>
+
+<b>Existing Tool: Configuration Browser.</b> The control flow analyzer
+is a database-backed Web interface that allows a network operator to
+browse router configuration at a high-level.  For example, an
+operator can view details about all BGP sessions at a particular router
+in the network, all BGP sessions in the network to a particular AS,
+etc.  The control flow analyzer supports the following features:
+<ul>
+<li> Text-based summary.
+<li> Network graph in <tt>dot</tt>, edges labeled with route map
+identifiers.
+<ul>
+<li> Restricted views: routers with eBGP sessions only, minimum degree, etc.
+</ul>
+<li> Database-backed Configuration Browser
+<ul>
+<li> BGP sessions by router
+<li> BGP sessions by remote AS
+<li> Route maps in normalized form
+<li> "Diffs" between two route maps
+<li> Sort display rows by import or export route map
+</ul>
+</ul>
+<p>
+<b>Note:</b> This part of rcc only works in Cisco IOS at the moment.  We
+are working on developing a new version.
+
+<!-- <b>Ongoing work: Intent-based Specification.</b>
+We believe that allowing operators to view wide-area routing
+configuration at a higher level of abstraction will facilitate
+configuration debugging.  Today, router configuration languages specify
+<em>mechanisms</em> (e.g., access-lists, community-lists, route maps,
+etc.) that implement various high-level policies, or <em>intended
+behavior</em> (e.g., don't readvertise provider routes to peers, etc.).
+Eventually, we believe that configuration languages should be written in
+terms of intent, rather than mechanism; in the meantime, however,
+today's configuration languages should be checked against a high-level
+specification of intended behavior. -->
+<p>
+
+<b>Examples</b>
+<ul>
+<li> Example <a href=examples/graph/route_maps.html>graph output</a> from the config flow analyzer.
+<li> Example <a href=examples/cfweb/aslist-fake.html>Web interface</a>.
+</ul>
+

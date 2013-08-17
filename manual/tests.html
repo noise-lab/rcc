@@ -1,0 +1,179 @@
+<center>
+<h1><font color=blue>rcc: Routing Configuration Checker</font></h1> 
+<h2><em>BGP Configuration Tests as of October 2005</em></h2>
+</center>
+
+
+<ol>
+        <li> Basic parse errors
+	<ul>
+          <li> undefined community-lists, as-path lists, etc.
+          <li> undefined route maps
+	  <li> undefined prefix-lists
+	  <li> undefined distribute-lists
+	  </ul>
+
+
+        <p>
+        <li> Tests that concern <b>validity</b> (i.e., could cause bogus
+          routes to be advertised).
+
+
+	  <ul>
+          <li> <em>AS path prepending:</em> is the local AS prepended?  if it's
+            a remote AS, the AS path is technically invalid.
+
+          <li> <em>Next-hop reachability:</em> Is the next-hop of an
+            iBGP-learned 
+            route reachable via the IGP?  That is, if next-hop-self is
+            not used on eBGP sessions, is the address of the external
+            session in the IGP?
+
+	    <li> <em>Prefix Filtering:</em> Do any eBGP sessions refer to
+	    distribute/prefix 
+	    lists that are not defined?  Does each eBGP session have a prefix
+	    ACL in either a distribute/prefix list or a route map?  Are these
+	    filters up-to-date with the list of <a href=>bogon prefixes</a>?
+
+	    <li> <em>AS Path Filtering:</em> For eBGP sessions that actively
+	    exchange routes to a privately numbered AS, is the private
+	    AS number removed? (either with <tt>remove-private-as</tt>
+	    or <tt>as-override</tt>?
+
+	    </ul>
+
+
+        <p>
+        <li> Tests that concern <b>visibility</b> (i.e., could cause a
+          route to not be advertised, even when a valid path exists)
+
+
+	  <ul>
+          <li> Is no synchronization enabled?
+          <li> Are there any iBGP-related partitions?
+	  <ul>
+                <li> If there is no hierarchy, is iBGP full-mesh?
+		<li> If route reflection is used, is the relationship of
+		          route reflectors to clients acyclic?
+		<li> Are route reflectors configured such that a
+		          partition will exist?
+                <li> If there is >1 route reflector in a cluster, do all of
+                  the clients for that cluster have a session with
+                  _every_ route reflector?
+                <li> Are there any sessions with duplicate router-ids or
+                  loopback IP addresses?
+	</ul>
+
+           <li> Are iBGP sessions between router _loopback_ addresses
+             (as opposed to interface addresses)?
+
+           <li> Are there "dangling" iBGP sessions?  i.e., iBGP sessions to
+             nonexistent IP addresses?
+
+	   <li> Are there attempts to originate a prefix with no corresponding
+	   route in the routing table? (i.e., <tt>network</tt> statements
+	   without <tt>route</tt> statements or appropriate redistribution.
+
+	      </ul>
+
+        <p>
+        <li> Tests that concern <b>determinism</b>.
+           
+	   <ul>
+          <li> Is "deterministic-med" enabled?
+          <li> Is "best path compared-routerid" enabled?
+          <li> Is next-hop-self used?  
+	    </ul>
+
+        <p>
+	<li> Tests that concern <b>information-flow control</b>.
+	<ul>
+           <li> Are there "inconsistent" peering export policies?
+             (ideally, an AS should export routes that look "equally
+              good" at all peering points with a particular peer.)
+
+           <li> Are there inconsistent peering import policies?
+             (less important than the previous question, but good to
+              figure out, since an AS may inadvertently be doing "cold
+              potato" routing when it doesn't want to)
+
+	   <li> Is network inadvertently advertising prefixes between two
+	   peers?  </ul>
+
+
+</ol>
+
+<p>
+<center>
+<h2><em>IS-IS Configuration Tests as of October 2005</em></h2>
+</center>
+
+
+<ol>
+        <li> Basic parse errors
+	<ul>
+	</ul>
+	
+	<p>
+	<li> Technical errors
+	<ul>
+	   <li> <em>MTU Mismatch</em>
+	</ul>
+	
+
+
+        <p>
+        <li> Tests that concern <b>validity</b> (i.e., could cause bogus
+          routes to be advertised).
+	  <ul>
+          <li> <em>Mesh Group Connectivity:</em> Are all routers in the same mesh group fully connected?
+	  <li> <em>Routing Level Mismatch:</em> Are routers connected by an adjacency configured for the same routing levels?
+	  <li> <em>Inter-Area Routing:</em> Are routers in different areas connected by an adjacency configured for Level 2 routing?
+	  </ul>
+
+
+        <p>
+        <li> Tests that concern <b>visibility</b> (i.e., could cause a
+          route to not be advertised, even when a valid path exists)
+	  <ul>
+          <li> Do all routers use the same type of authentication?
+          <li> Do all routers use the same auth key, if any?
+	  <li> Are there any sessions with duplicate router-ids or loopback IP addresses?
+          <li> Are IS-IS sessions between router _loopback_ addresses (as opposed to interface addresses)?
+
+         <li> Are there "dangling" IS-IS sessions?  i.e., IS-IS sessions to nonexistent IP addresses?
+
+      </ul>
+
+
+</ol>
+
+<p>
+<center>
+<h2><em>Additional Configuration Tests for OSPF as of October 2005</em></h2>
+</center>
+
+
+<ol>
+        <li> Basic parse errors
+	<ul>
+	</ul>
+	
+	<p>
+	<li> Technical errors
+	<ul>
+	   <li> <em>Area Checks</em>
+	   <ul>
+	   <li> Existence of backbone area
+	   <li> Non-backbone areas are connected to backbone
+	   <li> Stub areas properly configured
+	   <li> All routers in a given area are properly configured with
+	correct address
+	</ul>
+	<li> <em> No dangling OSPF links
+	</ul>
+	
+</ol>
+
+<b><a href=feedback.cgi>Send</a> us suggestions for other constraints
+you need checked!</b><p> 

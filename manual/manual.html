@@ -1,0 +1,285 @@
+<title>BGP Configuration Verifier: Manual</title>
+
+<center>
+<h1><font color=blue>rcc Manual</font></h1>
+</center>
+
+<h2>Requirements</h2>
+
+The pattern-based constraint verifier should run with minimal support;
+no database support is needed, nor does the program depend on any
+database support, CGI, etc.
+<p>
+
+On the other hand, the control-flow analyzer has several dependencies.
+We've highlighted the dependencies that are specific to the control-flow
+analyzer below. 
+
+<ul>
+<li> <a href=http://www.perl.orh>perl</a> (v5.8.0 or greater suggested)
+<li> <a href=http://www.mysql.com>mysql</a> (v.3.23 or greater suggested)
+<li> <a href=http://www.cpan.org/modules/>perl modules</a>
+<ul>
+<li> Getopt::Long
+<li> NetAddr::IP
+<li> DBI
+<li> Heap::Fibonacci
+<li> Digest::SHA1 (used to store and compare hashes rather than plaintext of auth keys)
+<li> CGI::Pretty (optional; for configuration browser only)
+<li> Algorithm::Diff (optional; for configuration browser only)
+</ul>
+<li> <a href=http://www.research.att.com/sw/tools/graphviz/>Graphviz</a>
+<tt>dot</tt> 
+</ul>
+
+<p>
+<center>
+<hr width=80%>
+</center>
+
+<h2>Download</h2>
+
+We eventually plan to make our code available to the general public.
+Because our tool is in its infancy, and because we want operator
+feedback, help, etc. in adding features, fixing bugs, and developing the
+tool, we are initially providing download access via a CVS pserver
+only.  This helps us keep track of the people in the community that are
+trying out the tool, and encourages others in the community to contribute.
+<p>
+<em>We are committed to making a tool that is useful to the operator
+community, but we can't do this without operator feedback!</em>  <br>We also
+emphasize that this tool is <b>alpha</b>, and only the adventurous
+should proceed. :)
+<p>
+To download the code, please take the following steps:
+<ol>
+<li> <b>Get access to the CVS pserver.</b>  The code is available for
+download via a CVS pserver.   <br>You can ask for access via <a href=feedback.cgi?subject=access>this form</a>.
+<p>
+<li> <b>Download code via the CVS pserver.</b>
+<ul>
+<li> Type <tt>cvs -d :pserver:[username]@nms.lcs.mit.edu:/cvs
+login</tt>.  <br>Enter your password when asked for it.
+<li> Type <tt>cvs -d :pserver:[username]@nms.lcs.mit.edu:/cvs checkout
+rolex</tt>.  <br>You should now have all of the code, DB schemas,
+documentation in a directory under <tt>rolex</tt>
+</ul>
+</ol>
+
+<p>
+<center>
+<hr width=80%>
+</center>
+
+<p>
+<b>Important Note:</b> To make this process a little more painless,
+these steps can now be executed using the <tt>menu.pl</tt> script in
+<tt>perl/src/utils/</tt>.  <em>Running this script and selecting from
+the appropriate menu options can prevent you from having to run most of
+the steps below from the command line.</em>
+
+
+
+<h2>Setup</h2>
+
+
+<ol>
+<li><b>Configuration File Setup.</b> The verifier is currently
+configured to read AS-wide configuration files from a single directory.
+The following two steps are necessary for the verifier to work.
+<br>
+<ul>
+<li>Place the configuration files in a single directory, and name the files
+according to the following format:
+<ul>
+<li> <tt>[router-name]-confg</tt> for Cisco IOS files.
+<li> <tt>[router-name]-<b>j</b>confg</tt> for Juniper files.
+</ul>
+<p>
+<li><em>If you don't use peer-groups, you can probably skip this step
+for now.</em> Change directories into <tt>perl/src/utils</tt> and run
+<tt>./riftrans_all.pl [config-dir]</tt>, where <tt>config-dir</tt> is
+the directory where you have placed the files.  This script simply does
+some preprocessing of the configs; for example, it expands things like
+the <tt>peer-group</tt> macro, etc.  </ul>
+
+<p>
+<b>Note:</b> The tool currently has modules for Cisco and Juniper
+configuration parsing.  The Cisco module works fairly well for Zebra,
+Avici, and (with minor modifications) Procket.
+
+
+<p>
+<li><b>Default Settings.</b> Most of the default settings are
+specified in <tt>ConfigCommon.pm</tt>.  In particular, you will want to
+set the variables that determine the host, port, user, and password
+information for accessing the database.
+<p>
+<tt>ConfigCommon.pm</tt> also contains important variable settings, such as the
+location of the binaries such as <tt>dot</tt>, etc., which will be
+necessary if you decide to use any of these binaries or want to change
+the location of the temporary directory.
+<p>
+Some of the tests for the configuration verifier require knowledge of
+which ASes are peers.  If you care about running those tests, you should
+create a file in the <tt>perl/conf/</tt> directory called
+<tt>peers.txt</tt>.  The file should include a comma-separated list of
+peers.  The distribution includes an example.
+
+<li><b>Database Setup.</b> You will need to create a database.  The
+default database names that <tt>ConfigDB.pm</tt> looks for
+are<tt>config_if</tt> (for the BGP constraint verifier),
+<tt>config_isis (for the IS-IS constraint verifier) </tt> and
+<tt>config_control_flow</tt> (for the configuration browser).  The
+easiest way to do this is to fire up <tt>mysql</tt> (or equivalent)
+and type <tt>create database config_if</tt> (or <tt> </tt>or
+<tt>config_control_flow</tt>).
+<p>
+(If you must change the default database
+name, this can be done in <tt>ConfigDB.pm</tt>.)
+<p>
+<li><b>Database Schema Setup.</b> Now it's time to set up the database
+tables.  The distribution includes the database schema in the
+<tt>db-schema/</tt> subdirectory.  The easiest way to do this is to type
+the following:  
+<ul>
+<li> <tt>cat db-schema/config_control_flow.sql | mysql
+config_control_flow</tt> 
+<li> <tt>cat db-schema/config_if.sql | mysql
+config_if</tt> 
+<li> <tt>cat db-schema/config_isis.sql | mysql
+config_isis</tt> 
+</ul>
+at the shell prompt.
+<p>
+<li><b>Web interface setup (configuration browser only).</b>
+<tt>flowgraph.cgi</tt> is an interface 
+to the database that shows some (hopefully) interesting things about the
+control graph.  
+<tt>flowgraph.cgi</tt> is a CGI script.  Therefore, it must be placed at
+some location on the Web server where executing CGI scripts is allowed.
+You must also <em>indicate the location where the verifier libs are
+located</em>.  (i.e., modify the <tt>push(@INC,
+"/home/feamster/bgp/src/rolex/perl/lib");</tt> line to point to the
+appropriate place, and make sure that the libs are world-readable.)
+<p>
+If you had to move flowgraph.cgi to a cgi-bin directory, you should
+also make sure that you either (1) moved ConfigWeb.pm to the same
+directory or (2) added a <tt>push(@INC, dir)</tt> statement to the
+code to point to the directory where ConfigWeb.pm is located.
+</ol>
+
+It should now be possible to run the verifier scripts.  If you encounter
+problems, <em>please contact us</em>.  
+
+<p>
+<center>
+<hr width=80%>
+</center>
+
+<h2>Usage</h2>
+
+The verifier scripts are located in the <tt>perl/src/</tt> directory.  The
+scripts for each part of the verifier are located in subdirectories.
+This section of the manual describes how to run those scripts, and, in
+the case of the control-flow analyzer, how to use the Web interface.
+
+<h3>Constraint Verifier</h3>
+
+The scripts for the constraint verifier are located in the
+<tt>perl/src/queries/</tt> subdirectory.  Running the constraint
+verifier involves two steps:
+
+<ol>
+<li> <b>Parsing Cisco and Juniper configs into an intermediate
+format.</b>  
+<p>This is done with the script <tt>gen_intermediate.pl</tt>
+in the <tt>src/config-convert</tt> subdirectory.  Important options for
+this script:
+<ul>
+<li> <tt>--configdir=[dir]</tt> (<b>mandatory</b>) specifies the
+directory where the script should look for configs (note, this should be
+the location of the 
+<em>translated</em> configs from the setup above).
+<li> <tt>--db</tt> -- inserts the intermediate format to the database
+created in the setup.  You'll almost always want this option.
+If you don't specify this, the intermediate format will be output to stdout.
+<li> <tt>--junos</tt> -- specify that the script should look for (and
+parse JunOS configs)
+</ul>
+<p><p>
+<li> <b>Running the constraint checks.</b><p>
+This is done by executing a perl script, such as the example we have
+included in <tt>src/queries/scripts/test_all.pl</tt> (you should run
+this script from the <tt>scripts</tt> directory).  
+
+<ul>
+<li> <tt>--files=[dir]</tt> -- if this option is not used, results from
+the tests 
+will be printed to STDOUT.  Otherwise, results printed to .txt files in
+<tt>dir</tt>. 
+</ul>
+<p>
+<em>More info:</em>Each test is a class method; constraints are grouped
+by classes, so it's easy to write a script that runs any subset of tests
+in <tt>test_all.pl</tt>.
+</ol>
+
+<h3>Configuration Browser</h3>
+
+The scripts for the pattern-based verifier are located in the
+<tt>perl/src/control/</tt> subdirectory.  
+<p>
+The control flow analyzer consists of:
+
+<ul>
+<li> <b>CFlow.</b> A analysis script, <tt>cflow.pl</tt>, which parses the
+configuration files and generates a high-level control flow analysis, in
+the form of a text-based or graphical flow graph.  Typically, this
+analysis will be inserted into the database that you created in the
+setup phase.
+<p>
+(If you opted to skip setting up the database, it's possible to run the
+script in "basic mode", or "graph mode", described below, but it's much
+less useful.)
+<p>
+The script has several options:
+<ul>
+<li> <em>Basic mode</em>, with no options.  This mode will simply print out a
+text representation of the high-level BGP configuration (i.e., what
+routers are connected to what, etc.). It does not require a DB backend.
+<li> <em>Graph mode</em>, with the <tt>--graph</tt> option.  <tt> ./cflow.pl
+--graph=dot </tt> will produce a dot representation of the network, 
+which can be graphed directly with the <tt>dot</tt> program. <tt>
+./cflow.pl --graph=eps </tt> will run <tt>dot</tt> automatically and
+produce a .eps file.
+<li> <em>DB mode</em>, with the <tt>--db</tt> option.  <tt> ./cflow.pl
+--db </tt> will populate the database that can be used with the -->
+<em>CFWeb</em> interface.   This requires that the DB was set up
+properly, according to the setup instructions above.
+ </tt>
+</ul>
+
+
+<p>
+<li> <b>CFWeb</b>. A <em>web interface</em> that queries the database
+backend, <tt>flowgraph.cgi</tt>.  Using this interface is fairly
+straightforward.  Just make sure you've set things up correctly in the
+setup phase, place <tt>flowgraph.cgi</tt> somewhere in your web server's
+document tree where you can execute CGI scripts, and point the browser
+at that location.
+<p>
+
+</ul>
+
+<!--- <h2>Examples and Demonstrations</h2> --->
+
+<p>
+<center>
+<hr width=80%>
+</center>
+
+<h2>Development</h2>
+
+<em>Coming soon:</em> Instructions for how to write new rules for the
+configuration verifier (i.e., writing new perl modules).

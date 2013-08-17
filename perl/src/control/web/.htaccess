@@ -1,0 +1,13 @@
+#AuthType Basic
+#AuthUserFile /home/feamster/bgp/.htpasswd
+#AuthName "Enter Password"
+#Require valid-user
+
+Order deny,allow
+Deny from all
+Allow from 127.0.0.1
+Allow from 18.31.0.35
+Allow from 18.31.0.38
+Allow from 65.96.174.193
+
+Satisfy all

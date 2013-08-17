@@ -1,0 +1,33 @@
+#!/usr/bin/env perl
+
+foreach $filename (@ARGV) {
+
+    if (-e $filename) {
+
+	if (open(THEFILE, "+<$filename")) {
+	    flock(THEFILE, LOCK_EX);
+	    @text = <THEFILE>;
+	    $oldtext = join("", @text);
+	    $newtext = $oldtext;
+	    $newtext =~ s///g;
+	    
+	    if ($newtext eq $oldtext) {
+		print "Skipping $filename.  No cleaning needed.\n";
+	    } else {
+		seek(THEFILE, 0, 0);
+		truncate(THEFILE, 0);
+		print THEFILE $newtext;
+		print "$filename successfully cleaned.\n";
+		flock(THEFILE, LOCK_UN);
+		close(THEFILE);
+	    }
+
+	} else {
+	    print "Unable to open $filename.\n";
+	}
+	    
+    } else {
+	print "$filename does not exist.\n";
+    }
+
+}

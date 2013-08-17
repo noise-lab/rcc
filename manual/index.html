@@ -1,0 +1,324 @@
+<title>rcc: BGP Configuration Verifier</title>
+
+<center>
+<h1><font color=blue>rcc: Routing Configuration Checker</font></h1> 
+<h2><em>BGP Configuration Verifier</em></h2>
+</center>
+
+<center>
+<table>
+   <tbody>
+
+      <tr>
+   <td align="Right"> <a href="#overview"><font face="ARIAL, GENEVA, HELVETICA, SANS-SERIF" color="#0033aa"><b>
+  overview</b></font></a>
+        </td>
+
+   <td align="Center">-</td>
+   <td align="Left" valign="Top"><font face="ARIAL, GENEVA, HELVETICA, SANS-SERIF">
+  background</font><br>
+        </a>
+   </td>
+   </tr>
+
+
+      <tr>
+   <td align="Right"> <a href="tests.html"><font face="ARIAL, GENEVA, HELVETICA, SANS-SERIF" color="#0033aa"><b>
+  correctness tests</b></font></a>
+        </td>
+
+   <td align="Center">-</td>
+   <td align="Left" valign="Top"><font face="ARIAL, GENEVA, HELVETICA, SANS-SERIF">
+  <em>summary of tests currently implemented</em></font><br>
+        </a>
+   </td>
+   </tr>
+
+
+      <tr>
+   <td align="Right"> <a href="verifier.html"><font face="ARIAL, GENEVA, HELVETICA, SANS-SERIF" color="#0033aa"><b>
+  constraint verifier</b></font></a>
+        </td>
+
+   <td align="Center">-</td>
+   <td align="Left" valign="Top"><font face="ARIAL, GENEVA, HELVETICA, SANS-SERIF">
+  verifies various correctness aspects of BGP configuration</font><br>
+        </a>
+   </td>
+   </tr>
+
+
+      <tr>
+   <td align="Right"> <a href="browser.html"><font face="ARIAL, GENEVA, HELVETICA, SANS-SERIF" color="#0033aa"><b>
+  configuration browser</b></font></a>
+        </td>
+
+   <td align="Center">-</td>
+   <td align="Left" valign="Top"><font face="ARIAL, GENEVA, HELVETICA, SANS-SERIF">
+  browse config summaries at a high level</font><br>
+        </a>
+   </td>
+   </tr>
+
+      <tr>
+   <td align="Right"> <a href="#status"><font face="ARIAL, GENEVA, HELVETICA, SANS-SERIF" color="#0033aa"><b>
+  implementation status</b></font></a>
+        </td>
+
+   <td align="Center">-</td>
+   <td align="Left" valign="Top"><font face="ARIAL, GENEVA, HELVETICA, SANS-SERIF">
+  implementation: planned features, schedule, etc.</font><br>
+        </a>
+   </td>
+   </tr>
+
+
+      <tr>
+   <td align="Right"> <a href=http://nms.lcs.mit.edu/bgp/rcc/feedback.cgi?subject=access><font face="ARIAL, GENEVA, HELVETICA, SANS-SERIF" color="#0033aa"><b>
+  software</b></font></a>
+        </td>
+
+   <td align="Center">-</td>
+   <td align="Left" valign="Top"><font face="ARIAL, GENEVA, HELVETICA, SANS-SERIF">
+  download information</font><br>
+        </a>
+   </td>
+   </tr>
+
+      <tr>
+   <td align="Right"> <a href=manual.html><font face="ARIAL, GENEVA, HELVETICA, SANS-SERIF" color="#0033aa"><b>
+  manual</b></font></a>
+        </td>
+
+   <td align="Center">-</td>
+   <td align="Left" valign="Top"><font face="ARIAL, GENEVA, HELVETICA, SANS-SERIF">
+  installation and usage information</font><br>
+        </a>
+   </td>
+   </tr>
+
+
+
+      <tr>
+   <td align="Right"> <a href="#feedback"><font face="ARIAL, GENEVA, HELVETICA, SANS-SERIF" color="#0033aa"><b>
+  feedback</b></font></a>
+        </td>
+
+   <td align="Center">-</td>
+   <td align="Left" valign="Top"><font face="ARIAL, GENEVA, HELVETICA, SANS-SERIF">
+  contact us: send us feature requests, etc.</font><br>
+        </a>
+   </td>
+   </tr>
+
+
+      <tr>
+   <td align="Right"> <a href="../routing/"><font face="ARIAL, GENEVA, HELVETICA, SANS-SERIF" color="#0033aa"><b>
+papers and talks</b></font></a>
+        </td>
+
+   <td align="Center">-</td>
+   <td align="Left" valign="Top"><font face="ARIAL, GENEVA, HELVETICA,
+   SANS-SERIF">
+  papers, talks, and more work on routing at MIT
+  </font><br>
+   </a>
+   </td>
+   </tr>
+
+
+
+
+
+</tbody>
+</table>
+<hr width=80%>
+</center>
+
+<a name=overview></a>
+<h3>Overview</h3>
+
+We are building a tool called <em>rcc</em> (formerly known as
+<em>RoLex</em>) that will allow network operators to verify that their
+networks' router configurations satisfy high-level properties.  rcc is
+still in the development phase, but we are actively seeking operator
+input to help us figure out what types of features, tools, etc., will be
+most useful to the operator community.
+<b>Please help by <a href=feedback.cgi>sending us feature requests</a>,
+etc.!</b> 
+<p>
+<b>Download, setup instructions, usage examples, demonstrations, etc., can
+be found in the <a href=manual.html>manual</a>.</b>
+<p>
+
+The state of the art for router configuration typically involves logging
+configuration changes and rolling back to a previous version when a
+problem arises. The lack of a formal reasoning framework means that
+router configuration is time-consuming and ad hoc. Network operators
+need tools based on systematic verification techniques to ensure that
+BGP's operational behavior is consistent with the intended behavior
+(i.e., that the network is operating ``correctly''). 
+
+We are designing a verification tool based on a new reasoning framework
+that helps operators and protocol designers reason about high-level
+properties of routing protocols.  
+<p>
+
+Currently, the verification tool has the following two components:
+
+<ol>
+<li> <b><a href=verifier.html>Constraint verifier.</a></b> <em>Note:</em> Most of the active
+development at this point is on this portion of the tool.
+<li> <a href=browser.html>Configuration browser.</a>
+</ol>
+<p>
+<center><img src=rolex1.gif></center>
+<p>
+
+
+<!---
+Advantages to the abstraction.
+Mention statistical variants ("beliefs"), etc.
+<p>
+Open questions.  What is the best way to use this type of thing, etc.?
+--->
+
+<em>rcc</em> parses router configuration into a vendor-independent,
+intermediate format, represented as <a
+href=config_if.sql>relational database tables</a>.
+
+<center>
+<hr width=80%>
+</center>
+
+<a name=status></a>
+<h3>Implementation Status</h3>
+
+
+We have recently augmented the tool to analyze both Cisco and Juniper
+configurations. 
+
+<p>
+<b>New:</b> Support for IGP.  See the list of <a
+href=tests.html>tests</a> for more detail.
+
+We would like to eventually add support for other routing configuration
+languages and welcome assistance in doing so!
+
+<p>
+<b>To-do list</b> (planned features, etc.) (Updated 10/24/2005)
+<ul>
+<li> Tests involving iBGP/IGP interaction
+<li> Network-wide route prediction
+<li> More iBGP-related tests.  (i.e., will the iBGP configuration result
+in persistent route oscillation?)
+<li> IPv6 support
+<li> RFC 2549 VPNs
+</ul>
+</ul>
+
+<center>
+<hr width=80%>
+</center>
+
+<a name=download></a>
+<h3>Download</h3>
+
+Please see the <a href=manual.html>manual</a> for download instructions.
+<p>
+<center>
+<hr width=80%>
+</center>
+
+<a name=feedback></a>
+<h3>Feedback: How you can help</h3>
+
+The ultimate usefulness of this tool depends on feature requests, bug
+reports, complaints, etc., from the operator community.  (Active
+operator involvement or access to selected configuration files, etc.,
+might also speed the development process...hint, hint.)
+<p>
+
+We could really use operator help in any of the following ways:
+<ul>
+<li> Suggestions for aspects of BGP configuration that typically need to
+be checked.
+<li> Providing access to router configuration files.
+<li> Running the tool on your configuration files and reporting findings.
+<li> Development.
+</ul>
+
+
+<p>
+You can provide feedback <b><a href=feedback.cgi>here</a></b>, or you
+may contact 
+<tt>bgp-config</tt> <!-- spammers go away --> at the domain
+<tt>nms.lcs.mit.edu</tt>.<p>
+
+<center>
+<hr width=80%>
+</center>
+
+<a name=papers></a>
+<h3>Papers, Talks, etc.</h3>
+
+<b>Papers</b>
+<br>
+
+Please see the <a href=../routing/>Routing Project</a> Web page for a
+full list of papers.
+
+<!--
+<ul>
+<li>
+<b><a href=rcc-tr.html>Verifying the Correctness of
+Wide-Area Internet Routing</a></b><br>
+Nick Feamster and Hari Balakrishnan<br>
+MIT-LCS-TR-948,
+Cambridge, MA, May 2004.</li>
+<p>
+<li>
+<b><a href=http://nms.lcs.mit.edu/papers/verify-hotnets2003.html>Practical Verification Techniques for Wide-Area Routing</a></b><br>
+Nick Feamster<br>
+<a href=http://www.acm.org/sigcomm/HotNets-II>2nd ACM Workshop on Hot Topics in Networks (HotNets-II)</a>,
+Cambridge, MA, November 2003.</li>
+</ul>
+-->
+<p>
+<b>Selected Talks</b>
+<br>
+
+<ul>
+<li><b>rcc: Router Configuration Checker</b></a>,
+<br><a href=>NANOG 35</a>. Los Angeles, CA. October 24, 2005. [<a
+href=>.pdf</a>] 
+<p>
+
+<li><b>Detecting BGP Configuration Faults with Static Analysis</b></a>,
+<br><a href=>2nd Usenix Symposium on Networked Systems Design and
+Implementation</a>. Boston, MA. May 2, 2005. [<a href=>.pdf</a>]
+<p>
+
+	  <li><b>Verifying Wide-Area Routing Configuration</b>, <br><a href=http://www.nanog.org/mtg-0405/>NANOG
+  31</a>.  San Francisco, CA.  May 24, 2004. [<a
+  href=http://www.nanog.org/mtg-0405/feamster.html>.html</a>] 
+<p>
+
+
+	  <li><b>A Systematic Approach to BGP Configuration
+  Checking</b>, <br><a href=http://www.nanog.org/mtg-0310/>NANOG
+  29</a>.  Chicago, IL.  October 21, 2003. [<a
+  href=http://www.nanog.org/mtg-0310/feamster.html>.html</a>] 
+<p>
+
+	  <li><b>Wide-Area Routing: The Devil is in the Configuration</b><br>
+	  <a href=http://www.net.informatik.tu-muenchen.de/wired/>Workshop on Internet
+	  Routing Evolution and Design</a>, <br>Mount Hood, OR.  October
+	  7, 2003. [<a href=http://nms.lcs.mit.edu/~feamster/talks/bgp/wired2003/>.html</a>] [<a
+	  href=http://nms.lcs.mit.edu/~feamster/talks/bgp/wired2003/talk.pdf>.pdf</a>] 
+
+</ul>
+
+More information can be found <a
+href=http://nms.lcs.mit.edu/bgp/>here</a>. 
+

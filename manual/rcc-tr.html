@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML> <HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="Description" CONTENT="Practical Verification Techniques for Wide-Area Routing">
+   <META NAME="Keywords" CONTENT="networks,routing,bgp,failures,Feamster">
+   <TITLE>Practical Verification Techniques for Wide-Area Routing</TITLE>
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000EF" VLINK="#51188E" ALINK="#FF0000">
+
+<B>Verifying the Correctness of Wide-Area Internet Routing</B>
+<P>
+<a href="http://nms.lcs.mit.edu/~feamster/">Nick Feamster</a> and
+<a href="http://nms.lcs.mit.edu/~hari/">Hari Balakrishnan</a>
+<BR>
+MIT-LCS-TR-948, May 2004.
+<P>
+
+<html>
+
+Several studies have shown that wide-area Internet routing is fragile,
+with failures occurring for a variety of reasons. Routing fragility
+is largely due to the flexible and powerful ways in which BGP can be
+configured to perform various tasks, which range from
+implementing the policies of commercial relationships to configuring
+backup paths. Configuring routers in an AS is like writing a distributed
+program, and BGP's flexible configuration and today's relatively
+low-level configuration languages make the process error-prone. The
+primary method used by operators to determine whether their complex
+configurations are correct is to try them out in operation.
+<p>
+We believe that there is a need for a systematic approach to verifying
+router configurations before they are deployed. This paper develops a
+static analysis framework for configuration checking, and uses it in the
+design of <em>rcc</em>, a ``router configuration
+checker''. <em>rcc</em> takes as input a set of router configurations
+and flags anomalies and errors, based on a set of well-defined
+correctness conditions. We have used <em>rcc</em> to check BGP
+configurations from 9 operational networks, testing nearly 700
+real-world router configurations in the process. Every network we
+analyzed had configuration errors, some of which were potentially
+serious and had previously gone unnoticed. Our analysis framework and
+results also suggest ways in which BGP and configuration languages
+should be improved. <em>rcc</em> has also been downloaded by 30 network
+operators to date.
+
+
+<P>
+[<A
+HREF="http://nms.lcs.mit.edu/bgp/rcc/rcc-tr.pdf">PDF</A> (134KB)]
+</BODY>
+</HTML>
